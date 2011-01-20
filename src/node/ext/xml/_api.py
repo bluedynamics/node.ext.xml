@@ -189,7 +189,7 @@ class XMLNode(Node):
             node._printtree(indent + 2)
 
 class XMLFormatter(object):
-    """XXX: move this to agx.io.zcml.
+    """XXX: move this to node.ext.zcml.
     """
     
     def format(self, xml):

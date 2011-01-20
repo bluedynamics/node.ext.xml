@@ -6,7 +6,7 @@ Lookup factory and read existing XML model.
 
     >>> import os
     >>> from zope.component import getUtility
-    >>> from agx.io.xml.interfaces import IXMLFactory
+    >>> from node.ext.xml.interfaces import IXMLFactory
     >>> factory = getUtility(IXMLFactory)
     >>> path = os.path.sep.join([datadir, 'test.xml'])
 
@@ -29,7 +29,7 @@ The name of the root element is the path to the xml file.
     ''
     
     >>> xml.outpath
-    '.../agx.io.xml/src/agx/io/xml/tests/data/test.xml'
+    '.../node.ext.xml/src/agx/io/xml/tests/data/test.xml'
 
 Get the XMI element. The name given to the nodes ``__getitem__`` function is
 always interpreted as the plain tag name. If more than one node is found by tag
@@ -205,7 +205,7 @@ overwritten on ``__call__`` by default.
 Create XML tree from scratch.
 ::
 
-    >>> from agx.io.xml import XMLNode
+    >>> from node.ext.xml import XMLNode
     >>> path = os.path.sep.join([datadir, 'new.xml'])
     >>> nsmap = {
     ...    None: 'http://fubar.com/ns1',
