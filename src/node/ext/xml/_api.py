@@ -1,23 +1,32 @@
-# Copyright BlueDynamics Alliance - http://bluedynamics.com
-# GNU General Public License Version 2
-
 import os
 import tempfile
 import shutil
 from lxml import etree
-from zope.interface import implements
-from zope.interface import alsoProvides
+from plumber import plumber
+from node.interfaces import (
+    ICallableNode,
+    IRoot,
+)
+from node.base import OrderedNode
+from node.parts import (
+    Order,
+    Reference,
+)
+from zope.interface import (
+    implements,
+    alsoProvides,
+)
 from zope.location import LocationIterator
-from zodict import Node
-from zodict.interfaces import ICallableNode
-from zodict.interfaces import IRoot
-from interfaces import IXMLFactory
-from interfaces import IXMLNode
+from node.ext.xml.interfaces import (
+    IXMLFactory,
+    IXMLNode,
+)
+
 
 _marker = object()
 
-class XMLFactory(object):
 
+class XMLFactory(object):
     implements(IXMLFactory)
 
     def __call__(self, path, idattribute='id', buffer=None):
@@ -31,7 +40,11 @@ class XMLFactory(object):
         alsoProvides(root, IRoot)
         return root
 
-class XMLNode(Node):
+
+class XMLNode(OrderedNode):
+    __metaclass__ = plumber
+    __plumbing__ = Reference, Order
+    
     implements(IXMLNode, ICallableNode)
 
     refindex = dict() # XXX: URGENT. don't provide global. otherwise multiple
@@ -59,7 +72,7 @@ class XMLNode(Node):
         if ns: self.prefix = '{%s}' % ns
         else: self.prefix = ''
         self.ns = ns
-        Node.__init__(self, name=name)
+        OrderedNode.__init__(self, name=name)
         if element is None:
             return
         if etree.iselement(element):
@@ -133,15 +146,15 @@ class XMLNode(Node):
         id = val.attributes.get(val.idattribute, None)
         if id:
             self.refindex[id] = val
-        Node.__setitem__(self, name, val)
+        OrderedNode.__setitem__(self, name, val)
 
     def __getitem__(self, name):
         keys = self._parsekeys(name)
         if not keys:
             raise KeyError(u"Node not found")
         if len(keys) == 1:
-            return Node.__getitem__(self, keys[0])
-        return [Node.__getitem__(self, key) for key in keys]
+            return OrderedNode.__getitem__(self, keys[0])
+        return [OrderedNode.__getitem__(self, key) for key in keys]
 
     def get(self, name, default=_marker):
         try:
@@ -187,6 +200,7 @@ class XMLNode(Node):
         for node in self.values():
             print indent * ' ' + node.element.tag
             node._printtree(indent + 2)
+
 
 class XMLFormatter(object):
     """XXX: move this to node.ext.zcml.

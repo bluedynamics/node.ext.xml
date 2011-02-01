@@ -1,9 +1,9 @@
-# Copyright BlueDynamics Alliance - http://bluedynamics.com
-# GNU General Public License Version 2
+from zope.interface import (
+    Interface,
+    Attribute,
+)
+from node.interfaces import INode
 
-from zope.interface import Interface
-from zope.interface import Attribute
-from zodict.interfaces import INode
 
 class IXMLFactory(Interface):
     
@@ -15,6 +15,7 @@ class IXMLFactory(Interface):
         @param idattribute: attribute used to catalog referencable objects.
                             this might get a list in future.
         """
+
 
 class IXMLNode(INode):
     """An XML Node.
