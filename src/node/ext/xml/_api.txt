@@ -226,3 +226,11 @@ Values::
     >>> xml.values()
     [<XMLNode object '...:child' at ...>, 
     <XMLNode object '...:{http://fubar.com/ns2}child' at ...>]
+    
+Items::
+
+    >>> xml.items()
+    [('...:child', 
+    <XMLNode object '...:child' at ...>), 
+    ('...:{http://fubar.com/ns2}child', 
+    <XMLNode object '...:{http://fubar.com/ns2}child' at ...>)]

@@ -16,7 +16,7 @@ from zope.interface import (
     implements,
     alsoProvides,
 )
-from zope.location import LocationIterator
+from node.utils import LocationIterator
 from node.ext.xml.interfaces import (
     IXMLFactory,
     IXMLNode,
@@ -164,6 +164,9 @@ class XMLNode(OrderedNode):
     
     def values(self):
         return [OrderedNode.__getitem__(self, key) for key in self.keys()]
+    
+    def items(self):
+        return [(key, OrderedNode.__getitem__(self, key)) for key in self.keys()]
 
     def _parsekeys(self, name):
         ret = list()
