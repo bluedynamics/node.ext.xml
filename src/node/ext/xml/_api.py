@@ -161,6 +161,9 @@ class XMLNode(OrderedNode):
             return self[name]
         except ValueError, e:
             return default
+    
+    def values(self):
+        return [OrderedNode.__getitem__(self, key) for key in self.keys()]
 
     def _parsekeys(self, name):
         ret = list()
