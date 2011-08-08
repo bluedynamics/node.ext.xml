@@ -1,8 +1,7 @@
 XML IO
 ======
 
-Lookup factory and read existing XML model.
-::
+Lookup factory and read existing XML model::
 
     >>> import os
     >>> from zope.component import getUtility
@@ -11,19 +10,16 @@ Lookup factory and read existing XML model.
     >>> path = os.path.sep.join([datadir, 'test.xml'])
 
 The second argument given to the factory is the attribute name used to catalog
-nodes by id. Its set to ``id`` by default.
-::
+nodes by id. Its set to ``id`` by default::
 
     >>> xml = factory(path, 'xmi.id')
 
-It's an XMI exported by poseidon.
-::
+It's an XMI exported by poseidon::
 
     >>> xml
     <XMLNode object '...' at ...>
 
-The name of the root element is the path to the xml file.
-::
+The name of the root element is the path to the xml file::
 
     >>> xml.__name__
     ''
@@ -33,21 +29,18 @@ The name of the root element is the path to the xml file.
 
 Get the XMI element. The name given to the nodes ``__getitem__`` function is
 always interpreted as the plain tag name. If more than one node is found by tag
-name, return a list of them.
-::
+name, return a list of them::
 
     >>> xmi = xml['XMI']
     >>> xmi
     <XMLNode object '...' at ...>
 
-Path of the XMI node.
-::
+Path of the XMI node::
 
     >>> xmi.path
     ['', '...:XMI']
 
-Read some more child nodes and check name and tag.
-::
+Read some more child nodes and check name and tag::
 
     >>> content = xmi['XMI.content']
     >>> content.__name__
@@ -57,21 +50,18 @@ Read some more child nodes and check name and tag.
     'XMI.content'
 
 The ``__name__`` attribute of each node is combined out of the node uuid and
-the tag name seperated by ``:``.
-::
+the tag name seperated by ``:``::
 
     >>> model = content['Model']
     >>> model.__name__
     '...:{org.omg.xmi.namespace.UML}Model'
 
-The ``tag`` attribute is formatted in clark name notation.
-::
+The ``tag`` attribute is formatted in clark name notation::
 
     >>> model.element.tag
     '{org.omg.xmi.namespace.UML}Model'
 
-Read some more child nodes.
-::
+Read some more child nodes::
 
     >>> nsoe = model['Namespace.ownedElement']
     >>> nsoe.__name__
@@ -102,8 +92,7 @@ Read some more child nodes.
     '{org.omg.xmi.namespace.UML}Stereotype'
 
 The attributes of a node are accessible through the node's ``attributes``
-attribute.
-::
+attribute::
 
     >>> stereotyperef.attributes
     {'xmi.idref': 'Im2b54d018m12023811d77mm7e67'}
@@ -119,15 +108,13 @@ attribute.
     '...:{org.omg.xmi.namespace.UML}Stereotype']
 
 Lets read a reference id from a node, under which the referenced node can be
-looked up.
-::
+looked up::
 
     >>> stereotyperef.attributes['xmi.idref']
     'Im2b54d018m12023811d77mm7e67'
 
 As pointed above, if more nodes are contained by tag name, they are returned as
-list from ``__getitem__`` and as well by ``get()``.
-::
+list from ``__getitem__`` and as well by ``get()``::
 
     >>> stereotypedef = nsoe['Stereotype']
     >>> stereotypedef
@@ -137,8 +124,7 @@ list from ``__getitem__`` and as well by ``get()``.
     <XMLNode object '...' at ...>,
     <XMLNode object '...' at ...>]
 
-This is the node which is referenced by the ``stereotyperef`` above.
-::
+This is the node which is referenced by the ``stereotyperef`` above::
 
     >>> stereotypedef[0].attributes['xmi.id']
     'Im2b54d018m12023811d77mm7e67'
@@ -155,8 +141,7 @@ This is the node which is referenced by the ``stereotyperef`` above.
     'egg'
 
 Now look up the referenced node by id. The ``reference`` function could be
-called elsewhere in the tree.
-::
+called elsewhere in the tree::
 
     >>> refid = stereotyperef.attributes['xmi.idref']
     >>> fromrefstereotypedef = stereotyperef.reference(refid)
@@ -169,14 +154,12 @@ called elsewhere in the tree.
     '...:{org.omg.xmi.namespace.UML}Namespace.ownedElement',
     '...:{org.omg.xmi.namespace.UML}Stereotype']
 
-Must be the same node.
-::
+Must be the same node::
 
     >>> fromrefstereotypedef is stereotypedef[0]
     True
 
-Also the elements must point to the same memory.
-::
+Also the elements must point to the same memory::
 
     >>> fromrefstereotypedef.element is stereotypedef[0].element
     True
@@ -196,14 +179,12 @@ Also the elements must point to the same memory.
     'view'
 
 Overwrite ``_outpath`` which is on root the input path. Model just gets
-overwritten on ``__call__`` by default.
-::
+overwritten on ``__call__`` by default::
 
     >>> xml.outpath = os.path.sep.join([datadir, 'testout.xml'])
     >>> xml()
 
-Create XML tree from scratch.
-::
+Create XML tree from scratch::
 
     >>> from node.ext.xml import XMLNode
     >>> path = os.path.sep.join([datadir, 'new.xml'])

@@ -47,7 +47,7 @@ class XMLNode(OrderedNode):
     
     implements(IXMLNode, ICallableNode)
 
-    refindex = dict() # XXX: URGENT. don't provide global. otherwise multiple
+    refindex = dict() # XXX: don't provide global. otherwise multiple
                       #      instanciated xml trees share the same reference
                       #      index !!!!!!!!!!!!!!!!!
 
@@ -89,16 +89,9 @@ class XMLNode(OrderedNode):
     def __call__(self):
         if not IRoot.providedBy(self):
             raise RuntimeError(u"Called on nonroot")
-        file = open(self.outpath, "wb")
-        file.write("<?xml version=\"1.0\" encoding=\"%s\"?>\n" % 'UTF-8')
-        if self.format == 1:
-            formatter = XMLFormatter()
-            formatted = formatter.format(etree.tostring(self.element,
-                                                        pretty_print=True))
-            file.write(formatted)
-        else:
+        with open(self.outpath, "wb") as file:
+            file.write("<?xml version=\"1.0\" encoding=\"%s\"?>\n" % 'UTF-8')
             file.write(etree.tostring(self.element, pretty_print=True))
-        file.close()
 
     @property
     def attributes(self):
@@ -149,6 +142,8 @@ class XMLNode(OrderedNode):
         OrderedNode.__setitem__(self, name, val)
 
     def __getitem__(self, name):
+        # XXX: use UUID here for tree representation and provide ``children``
+        #      function for filtering by tag name and similar.
         keys = self._parsekeys(name)
         if not keys:
             raise KeyError(u"Node not found")
@@ -157,15 +152,18 @@ class XMLNode(OrderedNode):
         return [OrderedNode.__getitem__(self, key) for key in keys]
 
     def get(self, name, default=_marker):
+        # XXX: see __getitem__
         try:
             return self[name]
         except ValueError, e:
             return default
     
     def values(self):
+        # XXX: see __getitem__
         return [OrderedNode.__getitem__(self, key) for key in self.keys()]
     
     def items(self):
+        # XXX: see __getitem__
         return [(key, OrderedNode.__getitem__(self, key)) for key in self.keys()]
 
     def _parsekeys(self, name):
@@ -206,31 +204,3 @@ class XMLNode(OrderedNode):
         for node in self.values():
             print indent * ' ' + node.element.tag
             node._printtree(indent + 2)
-
-
-class XMLFormatter(object):
-    """XXX: move this to node.ext.zcml.
-    """
-    
-    def format(self, xml):
-        ret = list()
-        lines = xml.split('\n')
-        for line in lines:
-            line = line.rstrip().replace('\t', '    ')
-            if line.find(' ') > -1:
-                indent = 0
-                while True:
-                    if line[indent] != u' ':
-                        break
-                    indent += 1
-                if len(line) > 80:
-                    sublines = line.strip().split(' ') # XXX
-                    ret.append(indent * ' ' + sublines[0])
-                    for subline in sublines[1:]:
-                        ret.append((indent + 4) * ' ' + subline)
-                else:
-                    ret.append(line)
-            else:
-                ret.append(line)
-        ret = '\n'.join(ret)
-        return ret.strip('\n')

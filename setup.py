@@ -1,12 +1,10 @@
-# Copyright BlueDynamics Alliance - http://bluedynamics.com
-# GNU General Public License Version 2
-
 from setuptools import setup, find_packages
 import sys, os
 
 version = '1.0'
 shortdesc ="AGX XML Input/Output"
-longdesc = open(os.path.join(os.path.dirname(__file__), 'README.txt')).read()
+longdesc = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
+longdesc += open(os.path.join(os.path.dirname(__file__), 'LICENSE.rst')).read()
 
 setup(name='node.ext.xml',
       version=version,
