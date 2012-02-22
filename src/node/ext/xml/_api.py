@@ -176,7 +176,11 @@ class XMLNode(OrderedNode):
 
     def _buildchildren(self, children):
         for elem in children:
-            ns, name = self._extractname(elem)
+            try:
+                ns, name = self._extractname(elem)
+            except:
+                # XXX: elem is comment -> what to do?
+                continue
             node = XMLNode(name=name, element=elem,
                            ns=ns, nsmap=self.namespaces,
                            idattribute=self.idattribute)
