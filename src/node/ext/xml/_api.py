@@ -4,7 +4,7 @@ import shutil
 from lxml import etree
 from plumber import plumber
 from node.interfaces import (
-    ICallableNode,
+    ICallable,
     IRoot,
 )
 from node.base import OrderedNode
@@ -45,7 +45,7 @@ class XMLNode(OrderedNode):
     __metaclass__ = plumber
     __plumbing__ = Reference, Order
     
-    implements(IXMLNode, ICallableNode)
+    implements(IXMLNode, ICallable)
 
     refindex = dict() # XXX: don't provide global. otherwise multiple
                       #      instanciated xml trees share the same reference
