@@ -8,7 +8,7 @@ from node.interfaces import (
     IRoot,
 )
 from node.base import OrderedNode
-from node.parts import (
+from node.behaviors import (
     Order,
     Reference,
 )
