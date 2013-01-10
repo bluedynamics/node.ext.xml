@@ -25,7 +25,7 @@ The name of the root element is the path to the xml file::
     ''
     
     >>> xml.outpath
-    '.../node.ext.xml/src/node/ext/xml/tests/data/test.xml'
+    '.../node.ext.xml/src/node/ext/xml/testing/data/test.xml'
 
 Get the XMI element. The name given to the nodes ``__getitem__`` function is
 always interpreted as the plain tag name. If more than one node is found by tag
