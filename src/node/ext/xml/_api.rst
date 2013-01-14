@@ -23,7 +23,7 @@ The name of the root element is the path to the xml file::
 
     >>> xml.__name__
     ''
-    
+
     >>> xml.outpath
     '.../node.ext.xml/src/node/ext/xml/testing/data/test.xml'
 
@@ -207,7 +207,7 @@ Values::
     >>> xml.values()
     [<XMLNode object '...:child' at ...>, 
     <XMLNode object '...:{http://fubar.com/ns2}child' at ...>]
-    
+
 Items::
 
     >>> xml.items()

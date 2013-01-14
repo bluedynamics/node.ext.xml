@@ -13,7 +13,7 @@ from node.behaviors import (
     Reference,
 )
 from zope.interface import (
-    implements,
+    implementer,
     alsoProvides,
 )
 from node.utils import LocationIterator
@@ -26,8 +26,8 @@ from node.ext.xml.interfaces import (
 _marker = object()
 
 
+@implementer(IXMLFactory)
 class XMLFactory(object):
-    implements(IXMLFactory)
 
     def __call__(self, path, idattribute='id', buffer=None):
         file = open(path)
@@ -41,12 +41,10 @@ class XMLFactory(object):
         return root
 
 
+@implementer(IXMLNode, ICallable)
 class XMLNode(OrderedNode):
     __metaclass__ = plumber
     __plumbing__ = Reference, Order
-    
-    implements(IXMLNode, ICallable)
-
     refindex = dict() # XXX: don't provide global. otherwise multiple
                       #      instanciated xml trees share the same reference
                       #      index !!!!!!!!!!!!!!!!!
@@ -107,7 +105,7 @@ class XMLNode(OrderedNode):
 
     def reference(self, id):
         return self.refindex.get(id, None)
-    
+
     @property
     def ns_name(self):
         for key, value in self.namespaces.items():
@@ -125,7 +123,7 @@ class XMLNode(OrderedNode):
         path.append("")
         path.reverse()
         return path
-    
+
     #def __delitem__(self, key):
     #    todelete = self[key]
     #    self.element.remove(todelete.element)
@@ -157,11 +155,11 @@ class XMLNode(OrderedNode):
             return self[name]
         except ValueError, e:
             return default
-    
+
     def values(self):
         # XXX: see __getitem__
         return [OrderedNode.__getitem__(self, key) for key in self.keys()]
-    
+
     def items(self):
         # XXX: see __getitem__
         return [(key, OrderedNode.__getitem__(self, key)) for key in self.keys()]
