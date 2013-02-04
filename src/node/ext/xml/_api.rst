@@ -50,7 +50,7 @@ Read some more child nodes and check name and tag::
     'XMI.content'
 
 The ``__name__`` attribute of each node is combined out of the node uuid and
-the tag name seperated by ``:``::
+the tag name separated by ``:``::
 
     >>> model = content['Model']
     >>> model.__name__
