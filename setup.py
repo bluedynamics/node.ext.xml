@@ -5,8 +5,8 @@ from setuptools import (
 )
 
 
-version = '1.0'
-shortdesc ="AGX XML Input/Output"
+version = '0.1'
+shortdesc = "XML file abstraction based on nodes"
 longdesc = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 longdesc += open(os.path.join(os.path.dirname(__file__), 'LICENSE.rst')).read()
 
@@ -16,16 +16,17 @@ setup(name='node.ext.xml',
       description=shortdesc,
       long_description=longdesc,
       classifiers=[
-          'Development Status :: 3 - Alpha',
-          'License :: OSI Approved :: GNU General Public License (GPL)',
+          'License :: OSI Approved :: BSD License',
+          'Intended Audience :: Developers',
+          'Topic :: Software Development',
           'Operating System :: OS Independent',
           'Programming Language :: Python',     
       ],
-      keywords='AGX, Code Generator, XML IO',
+      keywords='',
       author='BlueDynamics Alliance',
       author_email='dev@bluedynamics.com',
-      url=u'https://svn.plone.org/svn/archetypes/AGX',
-      license='GNU General Public Licence',
+      url=u'http://github.com/bluedynamics/node.ext.xml',
+      license='BSD',
       packages=find_packages('src'),
       package_dir={'': 'src'},
       namespace_packages=['node', 'node.ext'],
