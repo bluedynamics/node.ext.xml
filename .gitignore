@@ -3,3 +3,4 @@
 src/node.ext.xml.egg-info
 src/node/ext/xml/testing/data/new.xml
 src/node/ext/xml/testing/data/testout.xml
+dist/
