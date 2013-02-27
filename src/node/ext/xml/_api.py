@@ -29,13 +29,18 @@ _marker = object()
 @implementer(IXMLFactory)
 class XMLFactory(object):
 
-    def __call__(self, path, idattribute='id', buffer=None):
+    def __call__(self, path, idattribute='id', buffer=None, nsprefix=None):
         file = open(path)
         model = etree.parse(file)
         file.close()
+        nsmap=model.getroot().nsmap
+        if nsprefix:
+            #if an ns prefix is given, get the namespace by name and prefix
+            #the id attribute with the namespace
+            idattribute='{%s}%s' % (nsmap[nsprefix],idattribute)
         root = XMLNode(element=model,
                        path=path,
-                       nsmap=model.getroot().nsmap,
+                       nsmap=nsmap,
                        idattribute=idattribute)
         alsoProvides(root, IRoot)
         return root
